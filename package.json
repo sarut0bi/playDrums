@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "playwright": "^0.12.1",
-    "playwright-core": "^0.12.1"
+    "playwright-core": "^0.12.1",
+    "uuid": "^7.0.3"
   }
 }

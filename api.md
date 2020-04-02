@@ -7,12 +7,20 @@ Note : `openBrowser` launches the browser in headful mode by default.
 
 ### Parameters
 
--   `options` **[Object][1]** eg. {headless: true|false,observe=true,browserType: 'webkit'} (optional, default `{headless:false}`)
-    -   `options.browserType` **[string][2]** Option to choose browser. (optional, default `'firefox'`)
-    -   `options.headless` **[boolean][3]** Option to open browser in headless/headful mode. (optional, default `false`)
+-   `options` **[Object][1]** extra options. See [Extra Options][2] for a list of available options (optional, default `{}`)
     -   `options.ignoreCertificateErrors` **[boolean][3]** Option to ignore certificate errors. (optional, default `false`)
     -   `options.observe` **[boolean][3]** Option to run each command after a delay. Useful to observe what is happening in the browser. (optional, default `false`)
     -   `options.observeTime` **[number][4]** Option to modify delay time for observe mode. Accepts value in milliseconds. (optional, default `3000`)
+    -   `options.setDebugEvent` **[boolean][3]** Turn on debug event in console (optional, default `false`)
+    -   `options.browserType` **[string][5]** Option to choose browser. (optional, default `'chromium'`)
+    -   `options.contextName` **[Object][1]** Name context as specified
+    -   `options.device` **[Object][1]** Emulate given device.
+    -   `options.extraHTTPHeaders` **[Object][1]** Map with extra HTTP headers.
+    -   `options.headless` **[boolean][3]** Option to open browser in headless/headful mode. (optional, default `false`)
+    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.url` **[string][5]** URL to navigate page to.
+    -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
 ### Examples
 
@@ -22,48 +30,83 @@ await openBrowser()
 await openBrowser({browserType:'webkit'})
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
-## closeBrowser
+## openContext
 
-Closes the browser and along with all of its tabs.
+Opens the specified URL in the browser's window. Adds `http` protocol to the URL if not present.
+
+### Parameters
+
+-   `options` **[Object][1]** extra options. See [Extra Options][2] for a list of available options (optional, default `{}`)
+    -   `options.contextName` **[Object][1]** Name context as specified
+    -   `options.device` **[Object][1]** Emulate given device
+    -   `options.extraHTTPHeaders` **[Object][1]** Map with extra HTTP headers.
+    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.url` **[string][5]** URL to navigate page to.
+    -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
 ### Examples
 
 ```javascript
-await closeBrowser()
+await openContext('https://google.com', { name: 'windowName' }) - Opens a Incognito window
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
-## openTab
+## openPage
 
-Launches a new tab. If url is provided, the new tab is opened with the url loaded.
+Launches a new ¨Page. If url is provided, the new tab is opened with the url loaded.
 
 ### Parameters
 
--   `url`  
+-   `options` **[Object][1]** extra options. See [Extra Options][7] for a list of available options (optional, default `{}`)
+    -   `options.extraHTTPHeaders` **[Object][1]?** Map with extra HTTP headers.
+    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.url` **[string][5]** URL to navigate page to.
+    -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
+
+### Examples
+
+```javascript
+await openPage('https://duckduckgo.com/')
+await openPage() # opens a blank tab.
+```
+
+Returns **[Promise][6]** 
+
+## goto
+
+Opens the specified URL in the browser's tab. Adds `http` protocol to the URL if not present.
+
+### Parameters
+
+-   `url` **[string][5]** URL to navigate page to.
 -   `options` **[Object][1]**  (optional, default `{}`)
-    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. Accepts value in milliseconds. (optional, default `30000`)
-    -   `options.waitForEvents` **[Array][6]&lt;[string][2]>** Page load events to implicitly wait for. Events available [https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page][7] (optional, default `['domcontentloaded']`)
--   `targetUrl` **[string][2]** Url of page to open in newly created tab. (optional, default `undefined`)
+    -   `options.extraHTTPHeaders` **[Object][1]** Map with extra HTTP headers.
+    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
 ### Examples
 
 ```javascript
-await openTab('https://duckduckgo.com/')
-await openTab() # opens a blank tab.
+await goto('https://google.com')
+await goto('google.com')
+await goto({ navigationTimeout:10000, headers:{'Authorization':'Basic cG9zdG1hbjpwYXNzd29y2A=='}})
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
-## switchTab
+## switchPage
 
-Allows switching between tabs using URL or page title in current Window.
+Allows switching between pages using URL or page title in current Context.
 
 ### Parameters
 
--   `arg` **[string][2]** URL/Page title of the tab to switch.
+-   `arg` **[string][5]** URL/Page title of the tab to switch.
 
 ### Examples
 
@@ -78,37 +121,85 @@ await switchTo(/http(s?):\/\/(www?).google.(com|co.in|co.uk)/)
 await switchTo(/Go*gle/)
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
-## switchWindow
+## switchContext
 
 Allows switching between tabs using URL or page title in all opened Window. Will return the first matching tab.
 
 ### Parameters
 
--   `arg` **[string][2]** URL/Page title of the tab to switch.
--   `name` **[string][2]** Window name containing tab. Optional parameter
+-   `arg` **[string][5]** URL/Page title of the tab to switch.
+-   `name` **[string][5]** Window name containing tab. Optional parameter
 
 ### Examples
 
 ```javascript
 # switch using URL on default window
-await switchWindow('https://duckduckgo.com/','default')
-# switch using Title on all opened window
-await switchTo('Taiko')
+await switchContext('https://duckduckgo.com/','default')
+# switch using Title on all opened window will return first match
+await switchContext('Taiko')
 # switch using regex URL on window named 'Thirdwindow' 
-await switchTo(/http(s?):\/\/(www?).google.(com|co.in|co.uk)/,'ThirdWindow')
+await switchContext(/http(s?):\/\/(www?).google.(com|co.in|co.uk)/,'ThirdWindow')
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
-## intercept
+## closeBrowser
 
-Add interceptor for the network call. Helps in overriding request or to mock response of a network call in currentWindow.
+Closes the browser and along with all of its tabs.
+
+### Examples
+
+```javascript
+await closeBrowser()
+```
+
+Returns **[Promise][6]** 
+
+## closeContext
+
+Closes the specified browser context.
 
 ### Parameters
 
--   `requestUrl` **[string][2]** request URL to intercept
+-   `name`  
+
+### Examples
+
+```javascript
+await closeContext('windowName') - Closes a window with given arg or current if not provided
+```
+
+## closePage
+
+Closes the given tab with given URL or closes current tab in current or given context.
+
+### Parameters
+
+-   `arg` **[string][5]** URL/Page title of the tab to close. Optionnal (optional, default `undefined`)
+-   `contextName` **[string][5]** context to close page in. Optionnal (optional, default `undefined`)
+
+### Examples
+
+```javascript
+# Closes the current tab.
+await closePage()
+# Closes all the tabs with Title 'Open Source Test Automation Framework | Gauge' in currentWindow
+await closePage('Open Source Test Automation Framework | Gauge')
+# Closes all the tabs with URL 'https://gauge.org'. in 'default' named context. 
+await closePage('https://gauge.org','default')
+```
+
+Returns **[Promise][6]** 
+
+## intercept
+
+Add interceptor for the network call. Helps in overriding request or to mock response of a network call in currentContext.
+
+### Parameters
+
+-   `requestUrl` **[string][5]** request URL to intercept
 -   `option` **([function][8] \| [Object][1])** action to be done after interception.
 -   `count` **[number][4]** number of times the request has to be intercepted . Optional parameter
 
@@ -131,7 +222,7 @@ await intercept(url, undefined, 2)
 await intercept(url, {mockObject}, 3)
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## clearIntercept
 
@@ -140,8 +231,8 @@ Removes interceptor for the provided URL or all interceptors if no URL is specif
 ### Parameters
 
 -   `options` **[Object][1]** 
-    -   `options.requestUrl` **[string][2]** request URL to intercept. Optional parameters
-    -   `options.windowName` **[string][2]** request URL to intercept. Optional parameters
+    -   `options.requestUrl` **[string][5]** request URL to intercept. Optional parameters
+    -   `options.windowName` **[string][5]** request URL to intercept. Optional parameters
 
 ### Examples
 
@@ -166,7 +257,7 @@ Overrides the values of device screen dimensions
 await setViewPort({width:600, height:800})
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## getDevice
 
@@ -174,70 +265,16 @@ Get the values of device screen dimensions according to a predefined list of dev
 
 ### Parameters
 
--   `deviceModel` **[string][2]** See [device model][10] for a list of all device models.
+-   `deviceModel` **[string][5]** See [device model][10] for a list of all device models.
 
 ### Examples
 
 ```javascript
 await openBrowser({device:getDevice('iPhone 6')});
-await openWindow({device:getDevice('iPhone 6')});
+await openContext({device:getDevice('iPhone 6')});
 ```
 
 Returns **[object][1]** 
-
-## openWindow
-
-Opens the specified URL in the browser's window. Adds `http` protocol to the URL if not present.
-
-### Parameters
-
--   `name` **[string][2]** name of the window
--   `url` **[string][2]** URL to navigate page to.
--   `options` **[Object][1]**  (optional, default `{}`)
-    -   `options.waitForEvents` **[Array][6]&lt;[string][2]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
-    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
-    -   `options.headers` **[Object][1]** Map with extra HTTP headers.
-
-### Examples
-
-```javascript
-await openWindow('https://google.com', { name: 'windowName' }) - Opens a Incognito window
-await openWindow('https://google.com', { name: 'windowName', incognito: false }) - Opens normal window
-```
-
-Returns **[Promise][5]** 
-
-## closeWindow
-
-Closes the specified browser window.
-
-### Examples
-
-```javascript
-await closeWindow('windowName') - Closes a window with given arg or current if not provided
-```
-
-## closeTab
-
-Closes the given tab with given URL or closes current tab in current or given context.
-
-### Parameters
-
--   `arg` **[string][2]** URL/Page title of the tab to close. Optionnal (optional, default `undefined`)
--   `window` **[string][2]** context to close page in. Optionnal (optional, default `undefined`)
-
-### Examples
-
-```javascript
-# Closes the current tab.
-await closeTab()
-# Closes all the tabs with Title 'Open Source Test Automation Framework | Gauge' in currentWindow
-await closeTab('Open Source Test Automation Framework | Gauge')
-# Closes all the tabs with URL 'https://gauge.org'. in 'default' named context. 
-await closeTab('https://gauge.org','default')
-```
-
-Returns **[Promise][5]** 
 
 ## overridePermissions
 
@@ -245,8 +282,8 @@ Override specific permissions to the given origin
 
 ### Parameters
 
--   `origin` **[string][2]** url origin to override permissions
--   `permissions` **[Array][6]&lt;[string][2]>** See [Permission types][11] for a list of permission types.
+-   `origin` **[string][5]** url origin to override permissions
+-   `permissions` **[Array][11]&lt;[string][5]>** See [Permission types][12] for a list of permission types.
 
 ### Examples
 
@@ -254,7 +291,7 @@ Override specific permissions to the given origin
 await overridePermissions('http://maps.google.com',['geolocation']);
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## clearPermissionOverrides
 
@@ -266,7 +303,7 @@ Clears all permission overrides for all origins.
 await clearPermissionOverrides()
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## setCookie
 
@@ -274,15 +311,15 @@ Sets a cookie with the given cookie data. It may overwrite equivalent cookie if 
 
 ### Parameters
 
--   `name` **[string][2]** Cookie name.
--   `value` **[string][2]** Cookie value.
+-   `name` **[string][5]** Cookie name.
+-   `value` **[string][5]** Cookie value.
 -   `options` **[Object][1]**  (optional, default `{}`)
-    -   `options.url` **[string][2]** sets cookie with the URL. (optional, default `undefined`)
-    -   `options.domain` **[string][2]** sets cookie with the exact domain. (optional, default `undefined`)
-    -   `options.path` **[string][2]** sets cookie with the exact path. (optional, default `undefined`)
+    -   `options.url` **[string][5]** sets cookie with the URL. (optional, default `undefined`)
+    -   `options.domain` **[string][5]** sets cookie with the exact domain. (optional, default `undefined`)
+    -   `options.path` **[string][5]** sets cookie with the exact path. (optional, default `undefined`)
     -   `options.secure` **[boolean][3]** True if cookie to be set is secure. (optional, default `undefined`)
     -   `options.httpOnly` **[boolean][3]** True if cookie to be set is http-only. (optional, default `undefined`)
-    -   `options.sameSite` **[string][2]** Represents the cookie's 'SameSite' status: Refer [https://tools.ietf.org/html/draft-west-first-party-cookies][12]. (optional, default `undefined`)
+    -   `options.sameSite` **[string][5]** Represents the cookie's 'SameSite' status: Refer [https://tools.ietf.org/html/draft-west-first-party-cookies][13]. (optional, default `undefined`)
     -   `options.expires` **[number][4]** UTC time in seconds, counted from January 1, 1970. eg: 2019-02-16T16:55:45.529Z (optional, default `undefined`)
 
 ### Examples
@@ -292,7 +329,7 @@ await setCookie("CSRFToken","csrfToken", {url: "http://the-internet.herokuapp.co
 await setCookie("CSRFToken","csrfToken", {domain: "herokuapp.com"})
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## deleteCookies
 
@@ -301,11 +338,11 @@ Deletes browser cookies with matching name and URL or domain/path pair. If cooki
 ### Parameters
 
 -   `name`  
--   `cookieName` **[string][2]** Cookie name. (optional, default `undefined`)
+-   `cookieName` **[string][5]** Cookie name. (optional, default `undefined`)
 -   `options` **[Object][1]** 
-    -   `options.url` **[string][2]** deletes all the cookies with the given name where domain and path match provided URL. eg: [https://google.com][13] (optional, default `undefined`)
-    -   `options.domain` **[string][2]** deletes only cookies with the exact domain. eg: google.com (optional, default `undefined`)
-    -   `options.path` **[string][2]** deletes only cookies with the exact path. eg: Google/Chrome/Default/Cookies/.. (optional, default `undefined`)
+    -   `options.url` **[string][5]** deletes all the cookies with the given name where domain and path match provided URL. eg: [https://google.com][14] (optional, default `undefined`)
+    -   `options.domain` **[string][5]** deletes only cookies with the exact domain. eg: google.com (optional, default `undefined`)
+    -   `options.path` **[string][5]** deletes only cookies with the exact path. eg: Google/Chrome/Default/Cookies/.. (optional, default `undefined`)
 
 ### Examples
 
@@ -315,7 +352,7 @@ await deleteCookies("CSRFToken", {url: "http://the-internet.herokuapp.com"})
 await deleteCookies("CSRFToken", {domain: "herokuapp.com"})
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## getCookies
 
@@ -332,7 +369,7 @@ Get browser cookies
 await getCookies()
 ```
 
-Returns **[Promise][5]&lt;[Array][6]&lt;[Object][1]>>** Array of cookie objects
+Returns **[Promise][6]&lt;[Array][11]&lt;[Object][1]>>** Array of cookie objects
 
 ## setLocation
 
@@ -340,7 +377,7 @@ Overrides the Geolocation Position
 
 ### Parameters
 
--   `options` **[Object][1]** Latitue, logitude and accuracy to set the location. see [Detailed options][14]
+-   `options` **[Object][1]** Latitue, logitude and accuracy to set the location. see [Detailed options][15]
 
 ### Examples
 
@@ -348,29 +385,7 @@ Overrides the Geolocation Position
 await setLocation({ latitude: 27.1752868, longitude: 78.040009, accuracy:20 })
 ```
 
-Returns **[Promise][5]** 
-
-## goto
-
-Opens the specified URL in the browser's tab. Adds `http` protocol to the URL if not present.
-
-### Parameters
-
--   `url` **[string][2]** URL to navigate page to.
--   `options` **[Object][1]**  (optional, default `{}`)
-    -   `options.waitForEvents` **[Array][6]&lt;[string][2]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
-    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
-    -   `options.headers` **[Object][1]** Map with extra HTTP headers.
-
-### Examples
-
-```javascript
-await goto('https://google.com')
-await goto('google.com')
-await goto({ navigationTimeout:10000, headers:{'Authorization':'Basic cG9zdG1hbjpwYXNzd29y2A=='}})
-```
-
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## reload
 
@@ -379,7 +394,7 @@ Reloads the page.
 ### Parameters
 
 -   `options` **[Object][1]** 
-    -   `options.waitForEvents` **[Array][6]&lt;[string][2]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
+    -   `options.waitForEvents` **[Array][11]&lt;[string][5]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
 
 ### Examples
@@ -389,7 +404,7 @@ await reload()
 await reload({ navigationTimeout: 10000 })
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## goBack
 
@@ -398,7 +413,7 @@ Mimics browser back button click functionality.
 ### Parameters
 
 -   `options` **[Object][1]** 
-    -   `options.waitForEvents` **[Array][6]&lt;[string][2]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
+    -   `options.waitForEvents` **[Array][11]&lt;[string][5]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
 
 ### Examples
@@ -407,7 +422,7 @@ Mimics browser back button click functionality.
 await goBack()
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## goForward
 
@@ -416,7 +431,7 @@ Mimics browser forward button click functionality.
 ### Parameters
 
 -   `options` **[Object][1]** 
-    -   `options.waitForEvents` **[Array][6]&lt;[string][2]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
+    -   `options.waitForEvents` **[Array][11]&lt;[string][5]>** Events available to wait for ['DOMContentLoaded', 'loadEventFired', 'networkAlmostIdle', 'networkIdle', 'firstPaint', 'firstContentfulPaint', 'firstMeaningfulPaint'] (optional, default `['domcontentloaded']`)
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
 
 ### Examples
@@ -425,7 +440,7 @@ Mimics browser forward button click functionality.
 await goForward()
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## currentURL
 
@@ -439,7 +454,7 @@ await goto("www.google.com");
 await currentURL(); # returns "https://www.google.com/?gws_rd=ssl"
 ```
 
-Returns **[Promise][5]&lt;[string][2]>** The URL of the current window.
+Returns **[Promise][6]&lt;[string][5]>** The URL of the current window.
 
 ## title
 
@@ -453,7 +468,7 @@ await goto("www.google.com");
 await title(); # returns "Google"
 ```
 
-Returns **[Promise][5]&lt;[string][2]>** The title of the current page.
+Returns **[Promise][6]&lt;[string][5]>** The title of the current page.
 
 ## click
 
@@ -462,7 +477,7 @@ Fetches an element with the given selector, scrolls it into view if needed, and 
 ### Parameters
 
 -   `selector` **selector** A selector to search for element to click. If there are multiple elements satisfying the selector, the first will be clicked.
--   `options` **[Object][1]** see [Detailed Options][15] (optional, default `{}`)
+-   `options` **[Object][1]** see [Detailed Options][16] (optional, default `{}`)
 
 ### Examples
 
@@ -470,7 +485,7 @@ Fetches an element with the given selector, scrolls it into view if needed, and 
 await click($('[id = btnK]'))
 ```
 
-Returns **[Promise][5]** 
+Returns **[Promise][6]** 
 
 ## hover
 
@@ -478,8 +493,8 @@ Fetches an element with the given selector, scrolls it into view if needed, and 
 
 ### Parameters
 
--   `selector` **(selector | [string][2])** A selector to search for element to right click. If there are multiple elements satisfying the selector, the first will be hovered.
--   `options` **[Object][1]** see [Detailed Options][16]
+-   `selector` **(selector | [string][5])** A selector to search for element to right click. If there are multiple elements satisfying the selector, the first will be hovered.
+-   `options` **[Object][1]** see [Detailed Options][17]
 
 ### Examples
 
@@ -494,8 +509,8 @@ Fetches an element with the given selector and focuses it. If there's no element
 
 ### Parameters
 
--   `selector` **(selector | [string][2])** A selector of an element to focus. If there are multiple elements satisfying the selector, the first will be focused.
--   `options` **[Object][1]** see [Detailed Options][17]
+-   `selector` **(selector | [string][5])** A selector of an element to focus. If there are multiple elements satisfying the selector, the first will be focused.
+-   `options` **[Object][1]** see [Detailed Options][18]
 
 ### Examples
 
@@ -503,19 +518,292 @@ Fetches an element with the given selector and focuses it. If there's no element
 await focus(textBox('Username:'))
 ```
 
+## write
+
+Types the given text into the focused or given element.
+
+### Parameters
+
+-   `text` **[string][5]** Text to type into the element.
+-   `selector`  
+-   `options` **[Object][1]** 
+
+### Examples
+
+```javascript
+await write('admin', $('[id=text]'))
+await write('admin')
+```
+
+Returns **[Promise][6]** 
+
+## clear
+
+Clears the value of given selector. If no selector is given clears the current active element.
+
+### Parameters
+
+-   `selector` **selector** A selector to search for element to clear. If there are multiple elements satisfying the selector, the first will be cleared.
+-   `options` **[Object][1]** Click options.
+
+### Examples
+
+```javascript
+await clear()
+await clear(textBox({placeholder:'Email'}))
+```
+
+Returns **[Promise][6]** 
+
+## attach
+
+Attaches a file to a file input element.
+
+### Parameters
+
+-   `filePath`  
+-   `to` **(selector | [string][5])** The file input element to which to attach the file.
+-   `filepath` **[string][5]** The path of the file to be attached.
+
+### Examples
+
+```javascript
+await attach('c:/abc.txt', to('Please select a file:'))
+await attach('c:/abc.txt', 'Please select a file:')
+```
+
+Returns **[Promise][6]** 
+
+## press
+
+Presses the given keys.
+
+### Parameters
+
+-   `keys` **([string][5] \| [Array][11]&lt;[string][5]>)** Name of keys to press. See [USKeyboardLayout][19] for a list of all key names.
+-   `options` **[Object][1]** 
+
+### Examples
+
+```javascript
+await press('Enter')
+await press('a')
+await press(['Shift', 'ArrowLeft', 'ArrowLeft'])
+```
+
+Returns **[Promise][6]** 
+
+## highlight
+
+Highlights the given element on the page by drawing a red rectangle around it. This is useful for debugging purposes.
+
+### Parameters
+
+-   `selector` **selector** A selector of an element to highlight. If there are multiple elements satisfying the selector, the first will be highlighted.
+
+### Examples
+
+```javascript
+await highlight('Get Started')
+await highlight(link('Get Started'))
+```
+
+Returns **[Promise][6]** 
+
+## mouseAction
+
+Performs the given mouse action on the given coordinates. This is useful in performing actions on canvas.
+
+### Parameters
+
+-   `selector` **[string][5]** Element to be selected on the canvas
+-   `action` **[string][5]** Action to be performed on the canvas/selector
+-   `coordinates` **[Object][1]** Coordinates of a point on canvas/selector to perform the action.
+-   `options` **[Object][1]**  (optional, default `{}`)
+
+### Examples
+
+```javascript
+await mouseAction('press', {x:0,y:0})
+await mouseAction('move', {x:9,y:9})
+await mouseAction('release', {x:9,y:9})
+await mouseAction($("#elementID"),'press', {x:0,y:0})
+await mouseAction($(".elementClass"),'move', {x:9,y:9})
+await mouseAction($("testxpath"),'release', {x:9,y:9})
+```
+
+## scrollTo
+
+Scrolls the page to the given element.
+
+### Parameters
+
+-   `selector` **selector** A selector of an element to scroll to.
+-   `options` **[Object][1]**  (optional, default `{}`)
+
+### Examples
+
+```javascript
+await scrollTo(link('Get Started'))
+```
+
+Returns **[Promise][6]** 
+
+## screenshot
+
+Captures a screenshot of the page. Appends timeStamp to filename if no filepath given.
+
+### Parameters
+
+-   `selector` **(selector | [string][5])** 
+-   `options` **[Object][1]**  (optional, default `{}`)
+
+### Examples
+
+```javascript
+await screenshot()
+await screenshot({path : 'screenshot.png'})
+```
+
+Returns **[Promise][6]&lt;[Buffer][20]>** Promise which resolves to buffer with captured screenshot if {encoding:'base64'} given.
+
+## evaluate
+
+Evaluates script on element matching the given selector.
+
+### Parameters
+
+-   `selector` **(selector | [string][5])** Web element selector.
+-   `callback` **[function][8]** callback method to execute on the element or root HTML element when selector is not provided.<br>
+    NOTE : In callback, we can access only inline css not the one which are define in css files.
+-   `options` **[Object][1]** options. (optional, default `{}`)
+
+### Examples
+
+```javascript
+await evaluate($("[button]"), (element) => element.style.backgroundColor)
+
+await evaluate((element) => {
+     element.style.backgroundColor = 'red';
+})
+
+await evaluate(() => {
+  // Callback function have access to all DOM APIs available in the developer console.
+  return document.title;
+} )
+
+let options = { args: [ '.main-content', {backgroundColor:'red'}]}
+
+await evaluate(link("something"), (element, args) => {
+     element.style.backgroundColor = args[1].backgroundColor;
+     element.querySelector(args[0]).innerText = 'Some thing';
+}, options)
+```
+
+Returns **[Promise][6]&lt;[Object][1]>** Object with return value of callback given
+
+## setConfig
+
+Lets you configure global configurations.
+
+### Parameters
+
+-   `config`  
+-   `options` **[Object][1]** 
+    -   `options.observeTime` **[number][4]** Option to modify delay time in milliseconds for observe mode. (optional, default `3000`)
+    -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after performing
+        <a href="#opentab">openTab</a>, <a href="#goto">goto</a>, <a href="#reload">reload</a>, <a href="#goback">goBack</a>,
+        <a href="#goforward">goForward</a>, <a href="#click">click</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
+        <a href="#press">press</a> and <a href="#evaluate">evaluate</a>. (optional, default `30000`)
+    -   `options.retryInterval` **[number][4]** Option to modify delay time in milliseconds to retry the search of element existence. (optional, default `100`)
+    -   `options.retryTimeout` **[number][4]** Option to modify timeout in milliseconds while retrying the search of element existence. (optional, default `10000`)
+    -   `options.waitForNavigation` **[boolean][3]** Wait for navigation after performing <a href="#goto">goto</a>, <a href="#click">click</a>,
+        <a href="#doubleclick">doubleClick</a>, <a href="#rightclick">rightClick</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
+        <a href="#press">press</a> and <a href="#evaluate">evaluate</a>. (optional, default `true`)
+
+### Examples
+
+```javascript
+setConfig( { observeTime: 3000});
+```
+
+## getConfig
+
+Lets you read the global configurations.
+
+### Parameters
+
+-   `config`  
+-   `optionName` **[String][5]** Specifies the name of the configuration option/paramter you want to get (optional). If not specified, returns a shallow copy of the full global configuration.
+-   `String`  "navigationTimeout"] Navigation timeout value in milliseconds for navigation after performing
+-   `String`  "observeTime"] Option to modify delay time in milliseconds for observe mode.
+-   `String`  "retryInterval"] Option to modify delay time in milliseconds to retry the search of element existence.
+-   `String`  "retryTimeout"] Option to modify timeout in milliseconds while retrying the search of element existence.
+-   `String`  "observe"] Option to run each command after a delay. Useful to observe what is happening in the browser.
+-   `String`  "waitForNavigation"] Wait for navigation after performing <a href="#goto">goto</a>, <a href="#click">click</a>,
+    <a href="#doubleclick">doubleClick</a>, <a href="#rightclick">rightClick</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
+    <a href="#press">press</a> and <a href="#evaluate">evaluate</a>.
+-   `String`  "ignoreSSLErrors"] Option to ignore SSL errors encountered by the browser.
+-   `String`  "headful"] Option to open browser in headless/headful mode.
+-   `String`  "highlightOnAction"] Option to highlight an element on action.
+
+### Examples
+
+```javascript
+getConfig("retryInterval");
+```
+
+## $
+
+This [selector][21] lets you identify elements on the web page via XPath or CSS selector and proximity selectors.
+
+### Parameters
+
+-   `selector` **[string][5]** XPath or CSS selector.
+-   `options`   (optional, default `{}`)
+
+### Examples
+
+```javascript
+await highlight($(`//*[text()='text']`))
+await $(`//*[text()='text']`).exists()
+```
+
+Returns **Selector** 
+
+## waitFor
+
+This function is used to wait for number of milliseconds given or a given element or a given condition.
+
+### Parameters
+
+-   `element` **[string][5]** Element/condition to wait for
+-   `time` **([number][4] | time)** Time to wait. default to 10s
+
+### Examples
+
+```javascript
+waitFor(5000)
+waitFor("1 item in cart")
+waitFor("Order Created", 2000)
+waitFor(async () => !(await $("loading-text").exists()))
+```
+
+Returns **[promise][6]** 
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[2]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[7]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
+[7]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
@@ -523,16 +811,24 @@ await focus(textBox('Username:'))
 
 [10]: https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts
 
-[11]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextgrantpermissionspermissions-options
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: https://tools.ietf.org/html/draft-west-first-party-cookies
+[12]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextgrantpermissionspermissions-options
 
-[13]: https://google.com
+[13]: https://tools.ietf.org/html/draft-west-first-party-cookies
 
-[14]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextsetgeolocationgeolocation
+[14]: https://google.com
 
-[15]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pageclickselector-options
+[15]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsercontextsetgeolocationgeolocation
 
-[16]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagehoverselector-options
+[16]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pageclickselector-options
 
-[17]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagefocusselector-options
+[17]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagehoverselector-options
+
+[18]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagefocusselector-options
+
+[19]: https://github.com/getgauge/taiko/blob/master/lib/data/USKeyboardLayout.js
+
+[20]: https://nodejs.org/api/buffer.html
+
+[21]: selector
