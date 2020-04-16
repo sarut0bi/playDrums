@@ -2,12 +2,12 @@ const { openBrowser, setConfig, screenshot, closeBrowser } = require('../lib/pla
 const headless = false;
 
 beforeScenario(async () => {
-  await openBrowser({
+ /* await openBrowser({
     headless: headless,
     url: 'https://github.com/sarut0bi/playDrums/',
     //setDebugEvents: true,
   });
-  setConfig({ navigationTimeout: 60000 });
+  setConfig({ navigationTimeout: 60000 });*/
 });
 
 gauge.screenshotFn = async function() {

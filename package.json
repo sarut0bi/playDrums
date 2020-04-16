@@ -1,7 +1,7 @@
 {
-  "name": "gauge-taiko-template",
-  "version": "0.0.1",
-  "description": "Starter template for writing JavaScript tests for Gauge",
+  "name": "playdrums",
+  "version": "0.1.1",
+  "description": "Multibrowser test automation framework",
   "scripts": {
     "test": "node server.js",
     "doc": "documentation build lib/playdrums.js -f md --shallow -o api.md --markdown-toc=false"
@@ -13,5 +13,33 @@
   },
   "devDependencies": {
     "the-internet-express": "git+https://github.com/getgauge-contrib/the-internet-express.git"
-  }
+  },
+  "main": "lib/playdrums.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarut0bi/playDrums.git"
+  },
+  "keywords": [
+    "testing",
+    "playwright",
+    "mocha",
+    "jest",
+    "gauge",
+    "headless",
+    "painless",
+    "webkit",
+    "chrome",
+    "firefox",
+    "safari"
+  ],
+  "author": "sarut0bi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sarut0bi/playDrums/issues"
+  },
+  "homepage": "https://github.com/sarut0bi/playDrums#readme"
 }

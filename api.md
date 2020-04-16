@@ -11,14 +11,14 @@ Note : `openBrowser` launches the browser in headful mode by default.
     -   `options.ignoreCertificateErrors` **[boolean][3]** Option to ignore certificate errors. (optional, default `false`)
     -   `options.observe` **[boolean][3]** Option to run each command after a delay. Useful to observe what is happening in the browser. (optional, default `false`)
     -   `options.observeTime` **[number][4]** Option to modify delay time for observe mode. Accepts value in milliseconds. (optional, default `3000`)
-    -   `options.setDebugEvent` **[boolean][3]** Turn on debug event in console (optional, default `false`)
+    -   `options.setDebugEvents` **[boolean][3]** Turn on debug event in console (optional, default `false`)
     -   `options.browserType` **[string][5]** Option to choose browser. (optional, default `'chromium'`)
     -   `options.contextName` **[Object][1]** Name context as specified
     -   `options.device` **[Object][1]** Emulate given device.
     -   `options.extraHTTPHeaders` **[Object][1]** Map with extra HTTP headers.
     -   `options.headless` **[boolean][3]** Option to open browser in headless/headful mode. (optional, default `false`)
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
-    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Default timeout for all action. (optional, default `10000`)
     -   `options.url` **[string][5]** URL to navigate page to.
     -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
@@ -43,7 +43,7 @@ Opens the specified URL in the browser's window. Adds `http` protocol to the URL
     -   `options.device` **[Object][1]** Emulate given device
     -   `options.extraHTTPHeaders` **[Object][1]** Map with extra HTTP headers.
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
-    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Default timeout for all action. (optional, default `10000`)
     -   `options.url` **[string][5]** URL to navigate page to.
     -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
@@ -64,7 +64,7 @@ Launches a new ¨Page. If url is provided, the new tab is opened with the url lo
 -   `options` **[Object][1]** extra options. See [Extra Options][7] for a list of available options (optional, default `{}`)
     -   `options.extraHTTPHeaders` **[Object][1]?** Map with extra HTTP headers.
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
-    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Default timeout for all action. (optional, default `10000`)
     -   `options.url` **[string][5]** URL to navigate page to.
     -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
@@ -87,14 +87,13 @@ Opens the specified URL in the browser's tab. Adds `http` protocol to the URL if
 -   `options` **[Object][1]**  (optional, default `{}`)
     -   `options.extraHTTPHeaders` **[Object][1]** Map with extra HTTP headers.
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
-    -   `options.timeout` **[number][4]** Navigation timeout value in milliseconds for navigation after click. (optional, default `30000`)
+    -   `options.timeout` **[number][4]** Default timeout for all action. (optional, default `10000`)
     -   `options.waitUntil` **[string][5]** Events available to wait for "load"|"domcontentloaded"|"networkidle0"|"networkidle2" (optional, default `'load'`)
 
 ### Examples
 
 ```javascript
-await goto('https://google.com')
-await goto('google.com')
+await goto('https://duckduckgo.com')
 await goto({ navigationTimeout:10000, headers:{'Authorization':'Basic cG9zdG1hbjpwYXNzd29y2A=='}})
 ```
 
@@ -102,7 +101,7 @@ Returns **[Promise][6]**
 
 ## switchPage
 
-Allows switching between pages using URL or page title in current Context.
+Allows switching between pages using URL or page title in current Context. Will switch to the first matching tab.
 
 ### Parameters
 
@@ -125,7 +124,7 @@ Returns **[Promise][6]**
 
 ## switchContext
 
-Allows switching between tabs using URL or page title in all opened Window. Will return the first matching tab.
+Allows switching between tabs using URL or page title in all opened Window. Will switch to the first matching tab.
 
 ### Parameters
 
@@ -140,7 +139,20 @@ await switchContext('https://duckduckgo.com/','default')
 # switch using Title on all opened window will return first match
 await switchContext('Taiko')
 # switch using regex URL on window named 'Thirdwindow' 
-await switchContext(/http(s?):\/\/(www?).google.(com|co.in|co.uk)/,'ThirdWindow')
+await switchContext(/http(s?):\/\/(www?).google.(com|co.in|co.uk)/,'ThirdContext')
+```
+
+Returns **[Promise][6]** 
+
+## switchBack
+
+Allows switch to previous position
+
+### Examples
+
+```javascript
+# switch using URL on default window
+await switchback()
 ```
 
 Returns **[Promise][6]** 
@@ -230,6 +242,7 @@ Removes interceptor for the provided URL or all interceptors if no URL is specif
 
 ### Parameters
 
+-   `requestUrl`  
 -   `options` **[Object][1]** 
     -   `options.requestUrl` **[string][5]** request URL to intercept. Optional parameters
     -   `options.windowName` **[string][5]** request URL to intercept. Optional parameters
@@ -360,8 +373,8 @@ Get browser cookies
 
 ### Parameters
 
--   `name`  
 -   `options` **[Object][1]** 
+    -   `options.url` **[Array][11]&lt;[string][5]>** get all the cookies with the given name where domain and path match provided URL. eg: [https://google.com][14] (optional, default `undefined`)
 
 ### Examples
 
@@ -483,6 +496,8 @@ Fetches an element with the given selector, scrolls it into view if needed, and 
 
 ```javascript
 await click($('[id = btnK]'))
+await click($('//[@id = "btnK"]'))
+await click($('text=button text'))
 ```
 
 Returns **[Promise][6]** 
@@ -499,7 +514,7 @@ Fetches an element with the given selector, scrolls it into view if needed, and 
 ### Examples
 
 ```javascript
-await hover('Get Started')
+await hover('text=Get Started')
 await hover($('[id="btnK"]'))
 ```
 
@@ -515,7 +530,7 @@ Fetches an element with the given selector and focuses it. If there's no element
 ### Examples
 
 ```javascript
-await focus(textBox('Username:'))
+await focus($('text=Username:'))
 ```
 
 ## write
@@ -550,7 +565,7 @@ Clears the value of given selector. If no selector is given clears the current a
 
 ```javascript
 await clear()
-await clear(textBox({placeholder:'Email'}))
+await clear($([placeholder:'Email']))
 ```
 
 Returns **[Promise][6]** 
@@ -568,8 +583,7 @@ Attaches a file to a file input element.
 ### Examples
 
 ```javascript
-await attach('c:/abc.txt', to('Please select a file:'))
-await attach('c:/abc.txt', 'Please select a file:')
+await attach('c:/abc.txt', $('Please select a file:'))
 ```
 
 Returns **[Promise][6]** 
@@ -604,8 +618,8 @@ Highlights the given element on the page by drawing a red rectangle around it. T
 ### Examples
 
 ```javascript
-await highlight('Get Started')
-await highlight(link('Get Started'))
+await highlight('text=Get Started')
+await highlight($('//*[@id="button"]'))
 ```
 
 Returns **[Promise][6]** 
@@ -629,7 +643,7 @@ await mouseAction('move', {x:9,y:9})
 await mouseAction('release', {x:9,y:9})
 await mouseAction($("#elementID"),'press', {x:0,y:0})
 await mouseAction($(".elementClass"),'move', {x:9,y:9})
-await mouseAction($("testxpath"),'release', {x:9,y:9})
+await mouseAction($("//*[@id='plop']"),'release', {x:9,y:9})
 ```
 
 ## scrollTo
@@ -644,7 +658,7 @@ Scrolls the page to the given element.
 ### Examples
 
 ```javascript
-await scrollTo(link('Get Started'))
+await scrollTo($('text=Get Started'))
 ```
 
 Returns **[Promise][6]** 
@@ -667,40 +681,24 @@ await screenshot({path : 'screenshot.png'})
 
 Returns **[Promise][6]&lt;[Buffer][20]>** Promise which resolves to buffer with captured screenshot if {encoding:'base64'} given.
 
-## evaluate
+## $
 
-Evaluates script on element matching the given selector.
+This [selector][21] lets you identify elements on the web page via XPath, CSS selector or text.
 
 ### Parameters
 
--   `selector` **(selector | [string][5])** Web element selector.
--   `callback` **[function][8]** callback method to execute on the element or root HTML element when selector is not provided.<br>
-    NOTE : In callback, we can access only inline css not the one which are define in css files.
--   `options` **[Object][1]** options. (optional, default `{}`)
+-   `selector` **[string][5]** XPath or CSS selector.
+-   `options`   (optional, default `{}`)
 
 ### Examples
 
 ```javascript
-await evaluate($("[button]"), (element) => element.style.backgroundColor)
-
-await evaluate((element) => {
-     element.style.backgroundColor = 'red';
-})
-
-await evaluate(() => {
-  // Callback function have access to all DOM APIs available in the developer console.
-  return document.title;
-} )
-
-let options = { args: [ '.main-content', {backgroundColor:'red'}]}
-
-await evaluate(link("something"), (element, args) => {
-     element.style.backgroundColor = args[1].backgroundColor;
-     element.querySelector(args[0]).innerText = 'Some thing';
-}, options)
+await highlight($(`//*[text()='text']`))
+await $(`[class='className']`).exists()
+await $(`text=lorem ipsum`)
 ```
 
-Returns **[Promise][6]&lt;[Object][1]>** Object with return value of callback given
+Returns **Selector** 
 
 ## setConfig
 
@@ -715,8 +713,6 @@ Lets you configure global configurations.
         <a href="#opentab">openTab</a>, <a href="#goto">goto</a>, <a href="#reload">reload</a>, <a href="#goback">goBack</a>,
         <a href="#goforward">goForward</a>, <a href="#click">click</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
         <a href="#press">press</a> and <a href="#evaluate">evaluate</a>. (optional, default `30000`)
-    -   `options.retryInterval` **[number][4]** Option to modify delay time in milliseconds to retry the search of element existence. (optional, default `100`)
-    -   `options.retryTimeout` **[number][4]** Option to modify timeout in milliseconds while retrying the search of element existence. (optional, default `10000`)
     -   `options.waitForNavigation` **[boolean][3]** Wait for navigation after performing <a href="#goto">goto</a>, <a href="#click">click</a>,
         <a href="#doubleclick">doubleClick</a>, <a href="#rightclick">rightClick</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
         <a href="#press">press</a> and <a href="#evaluate">evaluate</a>. (optional, default `true`)
@@ -737,15 +733,13 @@ Lets you read the global configurations.
 -   `optionName` **[String][5]** Specifies the name of the configuration option/paramter you want to get (optional). If not specified, returns a shallow copy of the full global configuration.
 -   `String`  "navigationTimeout"] Navigation timeout value in milliseconds for navigation after performing
 -   `String`  "observeTime"] Option to modify delay time in milliseconds for observe mode.
--   `String`  "retryInterval"] Option to modify delay time in milliseconds to retry the search of element existence.
--   `String`  "retryTimeout"] Option to modify timeout in milliseconds while retrying the search of element existence.
+-   `String`  "timeout"] Option to modify delay time in milliseconds for all actions.
 -   `String`  "observe"] Option to run each command after a delay. Useful to observe what is happening in the browser.
 -   `String`  "waitForNavigation"] Wait for navigation after performing <a href="#goto">goto</a>, <a href="#click">click</a>,
     <a href="#doubleclick">doubleClick</a>, <a href="#rightclick">rightClick</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
     <a href="#press">press</a> and <a href="#evaluate">evaluate</a>.
 -   `String`  "ignoreSSLErrors"] Option to ignore SSL errors encountered by the browser.
--   `String`  "headful"] Option to open browser in headless/headful mode.
--   `String`  "highlightOnAction"] Option to highlight an element on action.
+-   `String`  "headless"] Option to open browser in headless/headful mode.
 
 ### Examples
 
@@ -753,43 +747,63 @@ Lets you read the global configurations.
 getConfig("retryInterval");
 ```
 
-## $
+## waitFor
 
-This [selector][21] lets you identify elements on the web page via XPath or CSS selector and proximity selectors.
+This function is used to wait for number of milliseconds given or a given Selector or a given condition.
 
 ### Parameters
 
--   `selector` **[string][5]** XPath or CSS selector.
+-   `time`  
+-   `elementOrFunc`  
+-   `args`  
 -   `options`   (optional, default `{}`)
 
 ### Examples
 
 ```javascript
-await highlight($(`//*[text()='text']`))
-await $(`//*[text()='text']`).exists()
+# case 1: wait for time :
+await waitFor(5000)
+# case 2: wait for Selector :
+await waitFor(3000,$("text=1 item in cart"))
+await waitFor(10000,$("text=Order Created"),'hidden')
+# case 3: wait for function :
+var f = () => {return window.innerWidth < 500;}
+await waitFor(10000,f)
+# case 4: wait for function with args :
+await waitFor(10000,([element,color]) => 
+{ return element.style.background == color;}
+,[$('//*[@class="content-info__item"][1]'),'green']);
 ```
 
-Returns **Selector** 
+Returns **[promise][6]** 
 
-## waitFor
+## evaluate
 
-This function is used to wait for number of milliseconds given or a given element or a given condition.
+Evaluates script on element matching the given selector.
 
 ### Parameters
 
--   `element` **[string][5]** Element/condition to wait for
--   `time` **([number][4] | time)** Time to wait. default to 10s
+-   `callback` **[function][8]** callback method to execute on the element or root HTML element when selector is not provided.<br>
+-   `args` **any** single or multiple callback args.<br>
+-   `options` **[Object][1]** options.
+    NOTE : In callback, we can access only inline css not the one which are define in css files.
 
 ### Examples
 
 ```javascript
-waitFor(5000)
-waitFor("1 item in cart")
-waitFor("Order Created", 2000)
-waitFor(async () => !(await $("loading-text").exists()))
+await evaluate(() => {
+  // Callback function have access to all DOM APIs available in the developer console.
+  return document.title;
+} )
+
+await evaluate((element) => element.style.backgroundColor),$("[button]"));
+
+await evaluate(([element,color]) => 
+{ element.style.background = color;}
+,[$('//*[@class="content-info__item"][1]'),'green']);
 ```
 
-Returns **[promise][6]** 
+Returns **[Promise][6]&lt;[Object][1]>** Object with return value of callback given
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
