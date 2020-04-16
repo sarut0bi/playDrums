@@ -22,7 +22,9 @@ See [API](https://github.com/sarut0bi/playDrums/blob/master/api.md)
 ## Main Features
 
 ### XHR request interception
+
 XHR Requests can be:
+
 * Blocked
 * Redirected
 * Modified before sending
@@ -31,7 +33,9 @@ XHR Requests can be:
 See [Details](https://github.com/sarut0bi/playDrums/blob/master/api.md#intercept)
 
 ### Smart navigation handling
+
 Every action that could invoke a navigation:
+
 * [goto](https://github.com/sarut0bi/playDrums/blob/master/api.md#goto)
 * [reload](https://github.com/sarut0bi/playDrums/blob/master/api.md#reload)
 * [goBack](https://github.com/sarut0bi/playDrums/blob/master/api.md#goBack)
@@ -41,20 +45,31 @@ Every action that could invoke a navigation:
 * [clear](https://github.com/sarut0bi/playDrums/blob/master/api.md#clear)
 * [press](https://github.com/sarut0bi/playDrums/blob/master/api.md#press)
 * [evaluate](https://github.com/sarut0bi/playDrums/blob/master/api.md#evaluate)
+
 can easily wait for:
+
 * Specific event raised
 * Request to be sent
 * Response of request to be received
+
 before executing next Step
 
 ## What is the difference between taiko and playdrums
+
 :white_check_mark: Context and page are now clearly indentified.
+
 :white_check_mark: Intercept are now clearly set to a context which can of course handle several pages(tabs in taiko) and better for parallelized tests.
+
 :white_check_mark: Switch tab between concept is allowed.
+
 :white_check_mark: All interracation are made through xpath,csspath or text using `$` function (See [details](https://github.com/sarut0bi/playDrums/blob/master/api.md))
+
 :white_check_mark: All playwright options have been kept.
+
 :x: Proximity Selectors and element selectors have been removed.
+
 :x: cli have also been removed.
+
 :x: still some work in progress... :hourglass:
 
 
