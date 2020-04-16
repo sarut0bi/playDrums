@@ -22,7 +22,7 @@ reports
 # Gauge - JavaScript node dependencies
 node_modules
 
-# Gauge - JavaScript node dependencies
+# working file
 env
-specs
-tests
+specs/temp.spec
+tests/temp.js

@@ -3,12 +3,15 @@
   "version": "0.0.1",
   "description": "Starter template for writing JavaScript tests for Gauge",
   "scripts": {
-    "test": "gauge run specs/",
+    "test": "node server.js",
     "doc": "documentation build lib/playdrums.js -f md --shallow -o api.md --markdown-toc=false"
   },
   "dependencies": {
     "playwright": "^0.12.1",
     "playwright-core": "^0.12.1",
     "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "the-internet-express": "git+https://github.com/getgauge-contrib/the-internet-express.git"
   }
 }
