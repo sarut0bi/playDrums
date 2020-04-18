@@ -78,7 +78,7 @@ before executing next Step
 ```javascript
 const { openBrowser,write, closeBrowser, goto, press, screenshot,  focus, $, waitFor } = require('playdrums');
 
-describe('Getting Started with Jest and Taiko', () => {
+describe('Getting Started with Jest and Playdrums', () => {
 
     beforeAll(async () => {
         await openBrowser({ headless: false, url:'about:blank' });
@@ -86,7 +86,7 @@ describe('Getting Started with Jest and Taiko', () => {
 
     describe('Search Taiko Repository', () => {
 
-        test('Goto getgauge github page', async () => {
+        test('Goto github page', async () => {
             await goto('https://github.com');
         });
 
@@ -117,7 +117,7 @@ const {openBrowser,write, closeBrowser, goto, press, screenshot,  focus, $, wait
 const assert = require("assert");
 const headless = false;
 
-describe('Getting Started with Mocha and Taiko', () => {
+describe('Getting Started with Mocha and Playdrums', () => {
 
     before(async () => {
         await openBrowser({ headless: headless });
@@ -135,7 +135,7 @@ describe('Getting Started with Mocha and Taiko', () => {
 			await press('Enter');
         });
 
-        it('Page contains "getgauge/taiko"', async () => {
+        it('Page contains playdrums', async () => {
             await waitFor(10000,$('//*[@href="/sarut0bi/playDrums"]'));
         });
 
