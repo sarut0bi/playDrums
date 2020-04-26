@@ -710,7 +710,7 @@ Lets you configure global configurations.
 -   `options` **[Object][1]** 
     -   `options.observeTime` **[number][4]** Option to modify delay time in milliseconds for observe mode. (optional, default `3000`)
     -   `options.navigationTimeout` **[number][4]** Navigation timeout value in milliseconds for navigation after performing
-        <a href="#opentab">openTab</a>, <a href="#goto">goto</a>, <a href="#reload">reload</a>, <a href="#goback">goBack</a>,
+        <a href="#openPage">openPage</a>, <a href="#goto">goto</a>, <a href="#reload">reload</a>, <a href="#goback">goBack</a>,
         <a href="#goforward">goForward</a>, <a href="#click">click</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
         <a href="#press">press</a> and <a href="#evaluate">evaluate</a>. (optional, default `30000`)
     -   `options.waitForNavigation` **[boolean][3]** Wait for navigation after performing <a href="#goto">goto</a>, <a href="#click">click</a>,
@@ -736,8 +736,7 @@ Lets you read the global configurations.
 -   `String`  "timeout"] Option to modify delay time in milliseconds for all actions.
 -   `String`  "observe"] Option to run each command after a delay. Useful to observe what is happening in the browser.
 -   `String`  "waitForNavigation"] Wait for navigation after performing <a href="#goto">goto</a>, <a href="#click">click</a>,
-    <a href="#doubleclick">doubleClick</a>, <a href="#rightclick">rightClick</a>, <a href="#write">write</a>, <a href="#clear">clear</a>,
-    <a href="#press">press</a> and <a href="#evaluate">evaluate</a>.
+    <a href="#write">write</a>, <a href="#clear">clear</a>, <a href="#press">press</a> and <a href="#evaluate">evaluate</a>.
 -   `String`  "ignoreSSLErrors"] Option to ignore SSL errors encountered by the browser.
 -   `String`  "headless"] Option to open browser in headless/headful mode.
 
