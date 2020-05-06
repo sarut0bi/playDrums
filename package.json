@@ -7,9 +7,9 @@
     "doc": "documentation build lib/playdrums.js -f md --shallow -o api.md --markdown-toc=false"
   },
   "dependencies": {
-    "playwright": "^0.15.0",
-    "playwright-core": "^0.15.0",
-    "uuid": "^7.0.3"
+    "playwright": "^1.0.0",
+    "playwright-core": "^1.0.0",
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "the-internet-express": "git+https://github.com/getgauge-contrib/the-internet-express.git"
