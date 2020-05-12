@@ -373,7 +373,7 @@ Get browser cookies
 
 ### Parameters
 
--   `options` **[Object][1]** 
+-   `options` **[Object][1]**  (optional, default `{}`)
     -   `options.url` **[Array][11]&lt;[string][5]>** get all the cookies with the given name where domain and path match provided URL. eg: [https://google.com][14] (optional, default `undefined`)
 
 ### Examples
@@ -752,7 +752,6 @@ This function is used to wait for number of milliseconds given or a given Select
 
 ### Parameters
 
--   `time`  
 -   `elementOrFunc`  
 -   `args`  
 -   `options`   (optional, default `{}`)
@@ -763,13 +762,13 @@ This function is used to wait for number of milliseconds given or a given Select
 # case 1: wait for time :
 await waitFor(5000)
 # case 2: wait for Selector :
-await waitFor(3000,$("text=1 item in cart"))
-await waitFor(10000,$("text=Order Created"),'hidden')
+await waitFor($("text=1 item in cart"))
+await waitFor($("text=Order Created"),'hidden')
 # case 3: wait for function :
-var f = () => {return window.innerWidth < 500;}
-await waitFor(10000,f)
-# case 4: wait for function with args :
-await waitFor(10000,([element,color]) => 
+let f = () => {return window.innerWidth < 500;}
+await waitFor(f)
+# case 4: wait for function with single or multiple args in an array :
+await waitFor(([element,color]) => 
 { return element.style.background == color;}
 ,[$('//*[@class="content-info__item"][1]'),'green']);
 ```
@@ -783,7 +782,7 @@ Evaluates script on element matching the given selector.
 ### Parameters
 
 -   `callback` **[function][8]** callback method to execute on the element or root HTML element when selector is not provided.<br>
--   `args` **any** single or multiple callback args.<br>
+-   `args` **any** single or multiple callback args embedded in an array.<br>
 -   `options` **[Object][1]** options.
     NOTE : In callback, we can access only inline css not the one which are define in css files.
 

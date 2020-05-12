@@ -84,7 +84,7 @@ describe('Getting Started with Jest and Playdrums', () => {
         await openBrowser({ headless: false, url:'about:blank' });
     });
 
-    describe('Search Taiko Repository', () => {
+    describe('Search Playdrums Repository', () => {
 
         test('Goto github page', async () => {
             await goto('https://github.com');
@@ -97,7 +97,7 @@ describe('Getting Started with Jest and Playdrums', () => {
         });
 
         test('Page contains playdrums', async () => {
-            await waitFor(10000,$('//*[@href="/sarut0bi/playDrums"]'))
+            await waitFor($('//*[@href="/sarut0bi/playDrums"]'))
         });
 
     });
@@ -123,7 +123,7 @@ describe('Getting Started with Mocha and Playdrums', () => {
         await openBrowser({ headless: headless });
     });
 
-    describe('Search Taiko Repository', () => {
+    describe('Search Playdrums Repository', () => {
 
         it('Goto github page', async () => {
             await goto('https://github.com');
@@ -136,7 +136,7 @@ describe('Getting Started with Mocha and Playdrums', () => {
         });
 
         it('Page contains playdrums', async () => {
-            await waitFor(10000,$('//*[@href="/sarut0bi/playDrums"]'));
+            await waitFor($('//*[@href="/sarut0bi/playDrums"]'));
         });
 
     });
@@ -180,6 +180,6 @@ step("Search for playdrums", async () => {
 });
 
 step("Page contains playdrums", async () => {
-    assert.ok(await waitFor(10000,$('//*[@href="/sarut0bi/playDrums"]')));
+    assert.ok(await waitFor($('//*[@href="/sarut0bi/playDrums"]')));
 });
 ```
