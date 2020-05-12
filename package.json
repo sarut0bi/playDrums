@@ -7,8 +7,8 @@
     "doc": "documentation build lib/playdrums.js -f md --shallow -o api.md --markdown-toc=false"
   },
   "dependencies": {
-    "playwright": "^1.0.0",
-    "playwright-core": "^1.0.0",
+    "playwright": "^1.0.1",
+    "playwright-core": "^1.0.1",
     "uuid": "^8.0.0"
   },
   "devDependencies": {
