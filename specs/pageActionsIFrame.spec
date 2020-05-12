@@ -18,8 +18,7 @@ tags:todo
 * Assert text "Clear it" exists on the page.
 
 ## Double Click
-tags:todofast
-* Assert text "Hello World" does not exist
+tags:done
 * Navigate to file with relative Path "/specs/data/doubleClickIFrame.html"
 * Double click 
 
