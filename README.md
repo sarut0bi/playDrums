@@ -51,6 +51,7 @@ can easily wait for:
 * Specific event raised
 * Request to be sent
 * Response of request to be received
+* Navigation
 
 before executing next Step
 
