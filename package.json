@@ -1,6 +1,6 @@
 {
   "name": "playdrums",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Multibrowser test automation framework",
   "scripts": {
     "test": "node server.js",
