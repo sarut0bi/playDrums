@@ -1,15 +1,15 @@
 {
   "name": "playdrums",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Multibrowser test automation framework",
   "scripts": {
     "test": "node server.js",
     "doc": "documentation build lib/playdrums.js -f md --shallow -o api.md --markdown-toc=false"
   },
   "dependencies": {
-    "playwright": "^1.2.1",
-    "playwright-core": "^1.2.1",
-    "uuid": "^8.2.0"
+    "playwright": "^1.4.1",
+    "playwright-core": "^1.4.1",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "the-internet-express": "git+https://github.com/getgauge-contrib/the-internet-express.git"
